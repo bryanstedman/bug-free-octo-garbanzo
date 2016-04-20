@@ -4,7 +4,7 @@
 var projectName = 'king-of-the-jungle';
 var paths = {
   styles: {
-    src: './assets/styles/**/*.scss',
+    src: './sass/*.scss',
     dest: './'
   },
   scripts: {
@@ -59,7 +59,7 @@ var gulp = require('gulp'),
 /* Tasks */
 
 // Styles Tasks
-gulp.task('styles', ['styles:lint'], function() {
+gulp.task('styles', function() {
   gulp.src(paths.styles.src)
     .pipe(sourcemaps.init())
     .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
