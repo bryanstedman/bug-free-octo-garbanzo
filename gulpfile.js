@@ -1,7 +1,7 @@
 'use strict';
 
 /* Configuration */
-var projectName = 'king-of-the-jungle';
+var projectName = 'garbanzo';
 var paths = {
   styles: {
     src: './sass/*.scss',
@@ -82,7 +82,7 @@ gulp.task('styles:watch', function() {
   gulp.watch(paths.styles.src, ['styles']);
 });
 
-gulp.task('styles:build', ['styles:lint'], function() {
+gulp.task('styles:build', function() {
   gulp.src(paths.styles.src)
     .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
     .pipe(autoprefixer())
@@ -92,7 +92,7 @@ gulp.task('styles:build', ['styles:lint'], function() {
 
 // Scripts tasks
 
-gulp.task('scripts', ['scripts:lint'], function() {
+gulp.task('scripts', function() {
   gulp.src(paths.scripts.src)
     .pipe(concat('scripts.min.js'))
     .pipe(uglify())
@@ -113,7 +113,7 @@ gulp.task('scripts:watch', function() {
   gulp.watch(paths.scripts.src, ['scripts']);
 });
 
-gulp.task('scripts:build', ['scripts:lint'], function() {
+gulp.task('scripts:build', function() {
   gulp.src(paths.scripts.src)
     .pipe(concat('scripts.min.js'))
     .pipe(uglify())
@@ -140,7 +140,7 @@ gulp.task('watch', function() {
   livereload.listen();
   gulp.watch(paths.imgs.src, ['images:optimize']);
   gulp.watch(paths.styles.src, ['styles']);
-  gulp.watch(paths.scripts.src, ['scripts']);
+  // gulp.watch(paths.scripts.src, ['scripts']);
   gulp.watch(paths.php.src).on('change', function(file) {
     livereload.changed(file);
   });
@@ -189,7 +189,6 @@ gulp.task('default', ['compile', 'images:optimize', 'watch']);
 gulp.task('build', function(callback) {
   runSequence(
     'images',
-    'lint',
     'cleanup',
     'scripts:build',
     'styles:build',
