@@ -238,10 +238,10 @@ gulp.task('release', function() {
       token: '59f3e0b80a8c6dfa12a4cbff5c44c966ba8cda31',    // or you can set an env var called GITHUB_TOKEN instead
       owner: 'bryanstedman',                                // if missing, it will be extracted from manifest (the repository.url field)
       repo: 'bug-free-octo-garbanzo',                       // if missing, it will be extracted from manifest (the repository.url field)
-      name: 'publish-release v1.0.0',                       // if missing, it will be the same as the tag
-      notes: 'very good!',                                  // if missing it will be left undefined
-      draft: false,                                         // if missing it's false
-      prerelease: false,                                    // if missing it's false
+      // name: 'publish-release v1.0.0',                       // if missing, it will be the same as the tag
+      // notes: 'very good!',                                  // if missing it will be left undefined
+      // draft: false,                                         // if missing it's false
+      // prerelease: false,                                    // if missing it's false
       manifest: require('./package.json')                   // package.json from which default values will be extracted if they're missing
     }));
 });
