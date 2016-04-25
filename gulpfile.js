@@ -46,6 +46,7 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     livereload = require('gulp-livereload'),
     postcss = require('gulp-postcss'),
+    release = require('gulp-github-release'),
     reporter = require('postcss-reporter'),
     runSequence = require('run-sequence'),
     sass = require('gulp-sass'),
@@ -195,4 +196,19 @@ gulp.task('build', function(callback) {
     'compile',
     'copy',
     callback);
+});
+
+// Release task
+gulp.task('release', function(){
+  gulp.src('./'+projectName+'.zip')
+    .pipe(release({
+      token: '59f3e0b80a8c6dfa12a4cbff5c44c966ba8cda31',    // or you can set an env var called GITHUB_TOKEN instead
+      owner: 'bryanstedman',                                // if missing, it will be extracted from manifest (the repository.url field)
+      repo: 'bug-free-octo-garbanzo',                       // if missing, it will be extracted from manifest (the repository.url field)
+      name: 'publish-release v1.0.0',                       // if missing, it will be the same as the tag
+      notes: 'very good!',                                  // if missing it will be left undefined
+      draft: false,                                         // if missing it's false
+      prerelease: false,                                    // if missing it's false
+      manifest: require('./package.json')                   // package.json from which default values will be extracted if they're missing
+    }));
 });
