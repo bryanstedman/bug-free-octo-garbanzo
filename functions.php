@@ -86,13 +86,19 @@ function automatic_GitHub_updates($data) {
   // Theme information
   $theme   = get_stylesheet(); // Get the folder name of the current theme
   $current = wp_get_theme()->get('Version'); // Get the version of the current theme
+
   // GitHub information
   $user = 'bryanstedman'; // The GitHub username hosting the repository
   $repo = 'bug-free-octo-garbanzo'; // Repository name as it appears in the URL
+  $token = '59f3e0b80a8c6dfa12a4cbff5c44c966ba8cda31'; // Github API token
+  $token_param = '';
+  if($token) {
+    $token_param = '?access_token=' . $token;
+  }
   // Get the latest release tag from the repository. The User-Agent header must be sent, as per
   // GitHub's API documentation: https://developer.github.com/v3/#user-agent-required
-  $file = @json_decode(@file_get_contents('https://api.github.com/repos/'.$user.'/'.$repo.'/releases/latest', false,
-      stream_context_create(['http' => ['header' => "User-Agent: ".$user."\r\n"]])
+  $file = @json_decode(@file_get_contents('https://api.github.com/repos/'.$user.'/'.$repo.'/releases/latest'.$token_param, false,
+    stream_context_create(['http' => ['header' => "User-Agent: ".$user."\r\n"]])
   ));
   if($file) {
     // Strip the version number of any non-alpha characters (excluding the period)
@@ -101,15 +107,16 @@ function automatic_GitHub_updates($data) {
     // Only return a response if the new version number is higher than the current version
     if($update > $current) {
       $data->response[$theme] = array(
-          'theme'       => $theme,
-          'new_version' => $update,
-          'url'         => 'https://github.com/'.$user.'/'.$repo,
-          'package'     => $file->assets[0]->browser_download_url,
+        'theme'       => $theme,
+        'new_version' => $update,
+        'url'         => 'https://github.com/'.$user.'/'.$repo,
+        'package'     => $file->assets[0]->browser_download_url,
       );
     }
   }
   return $data;
 }
+
 
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
