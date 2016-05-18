@@ -112,7 +112,7 @@ function automatic_GitHub_updates($data) {
   // GitHub information
   $user = 'bryanstedman'; // The GitHub username hosting the repository
   $repo = 'bug-free-octo-garbanzo'; // Repository name as it appears in the URL
-  $token = '59f3e0b80a8c6dfa12a4cbff5c44c966ba8cda31'; // Github API token
+  $token = get_option('lre_gh_token'); // Github API token
   $token_param = '';
   if($token) {
     $token_param = '?access_token=' . $token;
