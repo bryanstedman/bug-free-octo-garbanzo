@@ -237,11 +237,16 @@ gulp.task('tag', function() {
   return gulp.src(['./package.json']).pipe(tag_version());
 });
 
+var getSecrets = function () {
+  return JSON.parse(fs.readFileSync('./secrets.json', 'utf8'));
+};
+
 // Release task
 gulp.task('release', function() {
+  var secrets = getSecrets();
   gulp.src('./'+projectName+'.zip')
     .pipe(release({
-      token: '59f3e0b80a8c6dfa12a4cbff5c44c966ba8cda31',    // or you can set an env var called GITHUB_TOKEN instead
+      token: secrets.github_token,                          // or you can set an env var called GITHUB_TOKEN instead
       owner: 'bryanstedman',                                // if missing, it will be extracted from manifest (the repository.url field)
       repo: 'bug-free-octo-garbanzo',                       // if missing, it will be extracted from manifest (the repository.url field)
       manifest: require('./package.json')                   // package.json from which default values will be extracted if they're missing
