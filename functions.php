@@ -80,6 +80,28 @@ function garbanzo_setup() {
 endif;
 add_action( 'after_setup_theme', 'garbanzo_setup' );
 
+/**
+ * Register LRE settings
+ */
+function register_lre_settings() {
+  register_setting( 'lre_theme_options', 'lre_gh_token' );
+}
+add_action( 'admin_init', 'register_lre_settings' );
+
+/**
+ * Add github token page
+ */
+function gh_token_menu() {
+  add_menu_page( '* Github Token *', '* Github Token *', 'manage_options', 'github_token', 'github_token_page');
+}
+add_action('admin_menu', 'gh_token_menu');
+
+function github_token_page() {
+  require_once ( get_template_directory() . '/github_token.php' );
+}
+
+
+
 // Automatic theme updates from the GitHub repository
 add_filter('pre_set_site_transient_update_themes', 'automatic_GitHub_updates', 100, 1);
 function automatic_GitHub_updates($data) {
@@ -90,7 +112,7 @@ function automatic_GitHub_updates($data) {
   // GitHub information
   $user = 'bryanstedman'; // The GitHub username hosting the repository
   $repo = 'bug-free-octo-garbanzo'; // Repository name as it appears in the URL
-  $token = '59f3e0b80a8c6dfa12a4cbff5c44c966ba8cda31'; // Github API token
+  $token = get_option('lre_gh_token'); // Github API token
   $token_param = '';
   if($token) {
     $token_param = '?access_token=' . $token;
